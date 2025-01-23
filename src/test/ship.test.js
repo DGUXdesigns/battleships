@@ -1,4 +1,4 @@
-import { expect, describe, it } from '@jest/globals';
+import { expect, describe, it, test } from '@jest/globals';
 import { Ship } from '../gameLogic/ship';
 
 describe('Ship Class', () => {
@@ -22,5 +22,15 @@ describe('Ship Class', () => {
 
   it('Should tell you if a ship has sunk', () => {
     expect(ship).toHaveProperty('sunk');
+  });
+
+  test('Hit should increment hits count', () => {
+    expect(ship.hits).toBe(0);
+
+    ship.hit();
+    expect(ship.hits).toBe(1);
+
+    ship.hit();
+    expect(ship.hits).toBe(2);
   });
 });
