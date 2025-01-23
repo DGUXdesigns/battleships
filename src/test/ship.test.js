@@ -8,6 +8,10 @@ describe('Ship Class', () => {
     expect(ship).toBeInstanceOf(Object);
   });
 
+  it('Should have the ship name', () => {
+    expect(ship).toHaveProperty('name');
+  });
+
   it('Should include ship length', () => {
     expect(ship).toHaveProperty('length');
   });
