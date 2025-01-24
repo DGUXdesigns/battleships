@@ -20,7 +20,7 @@ export class Gameboard {
         throw new Error('Invalid ship placement');
       }
 
-      this.gameboard[currentRow][currentCol] = ship.name;
+      this.gameboard[currentRow][currentCol] = 'ship';
       ship.location.push({ row: currentRow, col: currentCol });
     }
 
@@ -28,34 +28,35 @@ export class Gameboard {
   }
 
   receiveAttack(row, col) {
+    const target = this.gameboard[row][col];
+
     // Check if location was already attacked
     if (
       this.missedAttacks.some(
         (attack) => attack.row === row && attack.col === col,
       )
     ) {
-      throw new Error("Can't attack the same place twice");
+      throw new Error("Can't attack the same location twice");
     }
 
     // Check if nothing was hit
-    if (this.gameboard[row][col] === null) {
+    if (target === null) {
       this.gameboard[row][col] = 'miss';
       this.missedAttacks.push({ row, col });
       return false;
     }
 
     // Check if ship was hit
-    const ship = this.ships.find(
-      (ship) => ship.name === this.gameboard[row][col],
-    );
-    const hitLocation = ship.location.find(
-      (loc) => loc.row === row && loc.col === col,
-    );
-
-    if (ship && hitLocation) {
-      ship.hit();
-      this.gameboard[row][col] = 'hit';
-      return true;
+    if (target === 'ship') {
+      for (let ship of this.ships) {
+        for (let i = 0; i < ship.location.length; i++) {
+          if (ship.location[i].row === row && ship.location[i].col === col) {
+            ship.hit();
+            this.gameboard[row][col] = 'hit';
+            return true;
+          }
+        }
+      }
     }
   }
 
