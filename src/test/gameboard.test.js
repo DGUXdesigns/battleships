@@ -8,7 +8,7 @@ describe('Gameboard Class', () => {
 
   beforeEach(() => {
     gameboard = new Gameboard(10);
-    ship = new Ship('Carrier', 5);
+    ship = new Ship('ship', 5);
     gameboard.placeShip(ship, 1, 1, true);
     gameboard.placeShip(ship, 3, 3, false);
   });
@@ -33,19 +33,19 @@ describe('Gameboard Class', () => {
 
   describe('placeShip', () => {
     test('Should place ship horizontally', () => {
-      expect(gameboard.gameboard[1][1]).toBe('Carrier');
-      expect(gameboard.gameboard[1][2]).toBe('Carrier');
-      expect(gameboard.gameboard[1][3]).toBe('Carrier');
-      expect(gameboard.gameboard[1][4]).toBe('Carrier');
-      expect(gameboard.gameboard[1][5]).toBe('Carrier');
+      expect(gameboard.gameboard[1][1]).toBe('ship');
+      expect(gameboard.gameboard[1][2]).toBe('ship');
+      expect(gameboard.gameboard[1][3]).toBe('ship');
+      expect(gameboard.gameboard[1][4]).toBe('ship');
+      expect(gameboard.gameboard[1][5]).toBe('ship');
     });
 
     test('Should place ship vertically', () => {
-      expect(gameboard.gameboard[3][3]).toBe('Carrier');
-      expect(gameboard.gameboard[4][3]).toBe('Carrier');
-      expect(gameboard.gameboard[5][3]).toBe('Carrier');
-      expect(gameboard.gameboard[6][3]).toBe('Carrier');
-      expect(gameboard.gameboard[7][3]).toBe('Carrier');
+      expect(gameboard.gameboard[3][3]).toBe('ship');
+      expect(gameboard.gameboard[4][3]).toBe('ship');
+      expect(gameboard.gameboard[5][3]).toBe('ship');
+      expect(gameboard.gameboard[6][3]).toBe('ship');
+      expect(gameboard.gameboard[7][3]).toBe('ship');
     });
 
     test("Ships shouldn't be placed out of bounds", () => {
@@ -57,6 +57,12 @@ describe('Gameboard Class', () => {
         gameboard.placeShip(ship, 9, 1, false);
       }).toThrowError('Invalid ship placement');
     });
+
+    test('Ships should not overlap', () => {
+      expect(() => {
+        gameboard.placeShip(ship, 2, 3, false);
+      }).toThrowError('Invalid ship placement');
+    });
   });
 
   describe('receiveAttack', () => {
@@ -65,7 +71,7 @@ describe('Gameboard Class', () => {
 
       expect(() => {
         gameboard.receiveAttack(2, 2);
-      }).toThrowError("Can't attack the same place twice");
+      }).toThrowError("Can't attack the same location twice");
     });
 
     test('Should mark missed shots', () => {
