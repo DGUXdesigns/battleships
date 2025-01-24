@@ -49,16 +49,6 @@ export class RenderGame {
     return board;
   }
 
-  updateCell(cell, result) {
-    if (result === true) {
-      cell.classList.add('hit');
-      return 'Enemy ship hit!';
-    } else if (result === false) {
-      cell.classList.add('miss');
-      return 'You missed...';
-    }
-  }
-
   creatTurnDisplay() {
     const container = document.createElement('div');
     container.classList.add('turn-display');
@@ -69,5 +59,57 @@ export class RenderGame {
     container.append(message);
 
     return container;
+  }
+
+  updateDisplay() {
+    const message = document.querySelector('.message');
+    message.innerText = `${this.currentPlayer.name}'s turn`;
+  }
+
+  computerTurn() {
+    this.updateDisplay;
+
+    const { result, row, col } = this.playerTwo.attack(
+      this.playerOne.gameboard,
+    );
+
+    const message = document.querySelector('.message');
+    const playerBoard = document.getElementById('player-board');
+    const cell = playerBoard.querySelector(
+      `.cell[data-row="${row}"][data-col="${col}"]`,
+    );
+
+    if (result === true) {
+      message.innerText = 'The enemy hit your ship!';
+    } else {
+      message.innerText = 'The enemy missed!';
+    }
+
+    this.updateCell(cell, result);
+
+    // Check if computer wins
+    if (this.playerOne.gameboard.gameOver()) {
+      message.innerText = 'Oh no! The enemy sunk all your battleships';
+    }
+
+    // Change back to player turn
+    this.toggleTurn();
+    this.updateDisplay();
+  }
+
+  updateCell(cell, result) {
+    if (result === true) {
+      cell.classList.add('hit');
+      return 'Enemy ship hit!';
+    } else if (result === false) {
+      cell.classList.add('miss');
+      return 'You missed...';
+    }
+  }
+
+  toggleTurn() {
+    this.currentPlayer === this.playerOne
+      ? (this.currentPlayer = this.playerTwo)
+      : (this.currentPlayer = this.playerOne);
   }
 }
