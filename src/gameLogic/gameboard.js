@@ -49,4 +49,12 @@ export class Gameboard {
       return true;
     }
   }
+
+  gameOver() {
+    if (this.ships.every((ship) => ship.sunk)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
