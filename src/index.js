@@ -37,6 +37,7 @@ form.addEventListener('submit', (event) => {
   // Attach event listener directly after initializing the game
   const message = document.querySelector('.message');
   const enemyBoard = document.getElementById('computer-board');
+  message.innerText = game.updateDisplay();
 
   enemyBoard.addEventListener('click', (event) => {
     try {
@@ -47,6 +48,20 @@ form.addEventListener('submit', (event) => {
         const result = game.playerTwo.gameboard.receiveAttack(row, col);
 
         message.innerText = game.updateCell(cell, result);
+
+        // Check if Player One wins
+        if (game.playerTwo.gameboard.gameOver()) {
+          message.innerText = 'You win! You sunk all their battleships!';
+          return;
+        }
+
+        game.toggleTurn();
+
+        // Simulate computer thinking
+        setTimeout(() => {
+          game.updateDisplay();
+          game.computerTurn();
+        }, 1000);
       }
     } catch (error) {
       message.innerText = error.message;
