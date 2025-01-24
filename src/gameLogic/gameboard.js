@@ -11,6 +11,15 @@ export class Gameboard {
       const currentRow = horizontal ? row : row + i;
       const currentCol = horizontal ? col + i : col;
 
+      // Ensure placement is within bounds
+      if (
+        currentRow >= this.size ||
+        currentCol >= this.size ||
+        this.gameboard[currentRow][currentCol] !== null
+      ) {
+        throw new Error('Invalid ship placement');
+      }
+
       this.gameboard[currentRow][currentCol] = ship.name;
       ship.location.push({ row: currentRow, col: currentCol });
     }
