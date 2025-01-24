@@ -35,8 +35,10 @@ header {
 main {
   display: flex;
   flex-direction: column;
+  gap: 5rem;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 /* Start Page Styling */
@@ -79,4 +81,35 @@ form button {
 
 form button:hover {
   transform: scale(1.05);
+}
+
+/* game Styling */
+.board-container {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  size: 400px;
+}
+
+.cell {
+  height: 40px;
+  width: 40px;
+  border: 1px solid gray;
+}
+
+.cell.ship {
+  background-color: blue;
+}
+
+.cell.miss {
+  background-color: #0a2a43;
+}
+
+.cell.hit {
+  background-color: red;
 }
