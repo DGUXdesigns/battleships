@@ -53,4 +53,22 @@ describe('Gameboard Class', () => {
       expect(gameboard.gameboard[7][3]).toBe('Carrier');
     });
   });
+
+  describe('receiveAttack', () => {
+    test("Shouldn't attack the same location twice", () => {
+      gameboard.receiveAttack(2, 2);
+      const result = gameboard.receiveAttack(2, 2);
+      expect(result).toBe("Can't attack the same place twice");
+    });
+
+    test('Should mark missed shots', () => {
+      gameboard.receiveAttack(2, 2);
+      expect(gameboard.gameboard[2][2]).toBe('miss');
+    });
+
+    test('Should mark succesful attacks on ships', () => {
+      gameboard.receiveAttack(5, 3);
+      expect(gameboard.gameboard[5][3]).toBe('hit');
+    });
+  });
 });
