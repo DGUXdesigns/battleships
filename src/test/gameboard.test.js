@@ -47,6 +47,16 @@ describe('Gameboard Class', () => {
       expect(gameboard.gameboard[6][3]).toBe('Carrier');
       expect(gameboard.gameboard[7][3]).toBe('Carrier');
     });
+
+    test("Ships shouldn't be placed out of bounds", () => {
+      expect(() => {
+        gameboard.placeShip(ship, 9, 9, true);
+      }).toThrowError('Invalid ship placement');
+
+      expect(() => {
+        gameboard.placeShip(ship, 9, 1, false);
+      }).toThrowError('Invalid ship placement');
+    });
   });
 
   describe('receiveAttack', () => {
