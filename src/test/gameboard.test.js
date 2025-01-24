@@ -1,5 +1,6 @@
-import { describe, test, it, beforeEach, expect, jest } from '@jest/globals';
+import { describe, test, it, beforeEach, expect } from '@jest/globals';
 import { Gameboard } from '../gameLogic/gameboard';
+import { Ship } from '../gameLogic/ship';
 
 describe('Gameboard Class', () => {
   let gameboard;
@@ -7,13 +8,7 @@ describe('Gameboard Class', () => {
 
   beforeEach(() => {
     gameboard = new Gameboard(10);
-    ship = {
-      name: 'Carrier',
-      length: 5,
-      hit: jest.fn(),
-      sunk: false,
-      location: [],
-    };
+    ship = new Ship('Carrier', 5);
     gameboard.placeShip(ship, 1, 1, true);
     gameboard.placeShip(ship, 3, 3, false);
   });
@@ -57,8 +52,10 @@ describe('Gameboard Class', () => {
   describe('receiveAttack', () => {
     test("Shouldn't attack the same location twice", () => {
       gameboard.receiveAttack(2, 2);
-      const result = gameboard.receiveAttack(2, 2);
-      expect(result).toBe("Can't attack the same place twice");
+
+      expect(() => {
+        gameboard.receiveAttack(2, 2);
+      }).toThrowError("Can't attack the same place twice");
     });
 
     test('Should mark missed shots', () => {
@@ -69,6 +66,24 @@ describe('Gameboard Class', () => {
     test('Should mark succesful attacks on ships', () => {
       gameboard.receiveAttack(5, 3);
       expect(gameboard.gameboard[5][3]).toBe('hit');
+    });
+  });
+
+  describe('gameOver', () => {
+    test('Game should end once all ships are Sunk', () => {
+      gameboard.receiveAttack(1, 1);
+      gameboard.receiveAttack(1, 2);
+      gameboard.receiveAttack(1, 3);
+      gameboard.receiveAttack(1, 4);
+      gameboard.receiveAttack(1, 5);
+
+      gameboard.receiveAttack(3, 3);
+      gameboard.receiveAttack(4, 3);
+      gameboard.receiveAttack(5, 3);
+      gameboard.receiveAttack(6, 3);
+      gameboard.receiveAttack(7, 3);
+
+      expect(gameboard.gameOver()).toBe(true);
     });
   });
 });
