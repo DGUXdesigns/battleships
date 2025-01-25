@@ -52,6 +52,7 @@ form.addEventListener('submit', (event) => {
         // Check if Player One wins
         if (game.playerTwo.gameboard.gameOver()) {
           message.innerText = 'You win! You sunk all their battleships!';
+          game.endGame();
           return;
         }
 
