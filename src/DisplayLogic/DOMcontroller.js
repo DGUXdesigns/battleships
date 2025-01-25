@@ -5,6 +5,29 @@ export class RenderGame {
     this.playerTwo = playerTwo;
     this.currentPlayer = this.playerOne;
     this.gameOver = false;
+    this.gamePhase = 'placement';
+  }
+
+  initGame() {
+    this.container.innerHTML = '';
+
+    const turnDisplay = this.creatTurnDisplay();
+
+    const boardContainer = document.createElement('div');
+    boardContainer.classList.add('board-container');
+
+    const playerBoard = this.createBoard(this.playerOne);
+    playerBoard.id = 'player-board';
+
+    const computerBoard = this.createBoard(this.playerTwo);
+    computerBoard.id = 'computer-board';
+
+    const resetBtn = this.createPlayAgainButton();
+
+    boardContainer.append(playerBoard, computerBoard);
+    this.container.append(turnDisplay, boardContainer, resetBtn);
+
+    this.updateDisplay();
   }
 
   createBoard(player) {
@@ -77,26 +100,6 @@ export class RenderGame {
     enemyBoard.classList.remove('disabled');
   }
 
-  initGame() {
-    this.container.innerHTML = '';
-
-    const turnDisplay = this.creatTurnDisplay();
-
-    const boardContainer = document.createElement('div');
-    boardContainer.classList.add('board-container');
-
-    const playerBoard = this.createBoard(this.playerOne);
-    playerBoard.id = 'player-board';
-
-    const computerBoard = this.createBoard(this.playerTwo);
-    computerBoard.id = 'computer-board';
-
-    const resetBtn = this.createPlayAgainButton();
-
-    boardContainer.append(playerBoard, computerBoard);
-    this.container.append(turnDisplay, boardContainer, resetBtn);
-  }
-
   creatTurnDisplay() {
     const container = document.createElement('div');
     container.classList.add('turn-display');
@@ -141,7 +144,7 @@ export class RenderGame {
     setTimeout(() => {
       this.toggleTurn();
       this.updateDisplay();
-    }, 1000);
+    }, 800);
   }
 
   updateCell(cell, result) {
