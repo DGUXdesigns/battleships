@@ -90,6 +90,13 @@ form button:hover {
   align-items: center;
 }
 
+.board-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
 .game-board {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
