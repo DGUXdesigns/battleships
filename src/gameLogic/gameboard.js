@@ -41,7 +41,7 @@ export class Gameboard {
       }
     }
 
-    return true; // Return true if no adjacent ship was found
+    return true;
   }
 
   placeShip(ship, row, col, horizontal = true) {
