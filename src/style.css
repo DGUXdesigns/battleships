@@ -54,7 +54,8 @@ label {
 }
 
 input,
-form button {
+form button,
+.play-again-button {
   padding: 1rem 1rem;
   border-radius: 0.25rem;
   color: #fff;
@@ -71,7 +72,8 @@ input:focus {
   border: 0.125rem solid #56ccf2;
 }
 
-form button {
+form button,
+.play-again-button {
   border: none;
   background-color: #0a2a43;
   font-weight: 700;
@@ -79,7 +81,8 @@ form button {
   transition: all 0.3s ease;
 }
 
-form button:hover {
+form button:hover,
+.play-again-button:hover {
   transform: scale(1.05);
 }
 
@@ -119,4 +122,8 @@ form button:hover {
 
 .cell.hit {
   background-color: red;
+}
+
+.disabled {
+  pointer-events: none;
 }
