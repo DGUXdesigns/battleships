@@ -2,7 +2,7 @@ export class Gameboard {
   constructor(size) {
     this.size = size;
     this.gameboard = Array.from({ length: size }, () => Array(size).fill(null));
-    this.missedAttacks = [];
+    this.prevAttacks = [];
     this.ships = [];
   }
 
@@ -32,17 +32,18 @@ export class Gameboard {
 
     // Check if location was already attacked
     if (
-      this.missedAttacks.some(
+      this.prevAttacks.some(
         (attack) => attack.row === row && attack.col === col,
       )
     ) {
       throw new Error("Can't attack the same location twice");
     }
 
+    this.prevAttacks.push({ row, col });
+
     // Check if nothing was hit
     if (target === null) {
       this.gameboard[row][col] = 'miss';
-      this.missedAttacks.push({ row, col });
       return false;
     }
 
