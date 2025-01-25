@@ -12,32 +12,25 @@ const cruiser = new Ship('Cruiser', 4);
 const submarine = new Ship('Submarine', 3);
 const destroyer = new Ship('Destroyer', 3);
 
+const ships = [carrier, battleship, cruiser, submarine, destroyer];
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
   const player = new Player(name.value);
   const computer = new Player('computer');
 
-  player.gameboard.placeShip(carrier, 0, 0, false);
-  player.gameboard.placeShip(battleship, 2, 5, true);
-  player.gameboard.placeShip(cruiser, 6, 2, false);
-  player.gameboard.placeShip(submarine, 4, 7, true);
-  player.gameboard.placeShip(destroyer, 8, 5, true);
+  ships.forEach((ship) => player.gameboard.randomPlaceShip(ship));
+  ships.forEach((ship) => computer.gameboard.randomPlaceShip(ship));
 
-  computer.gameboard.placeShip(carrier, 0, 0, false);
-  computer.gameboard.placeShip(battleship, 2, 5, true);
-  computer.gameboard.placeShip(cruiser, 6, 2, false);
-  computer.gameboard.placeShip(submarine, 4, 7, true);
-  computer.gameboard.placeShip(destroyer, 8, 5, true);
-
-  name.value = '';
   const game = new RenderGame('main', player, computer);
   game.initGame();
+
+  name.value = '';
 
   // Attach event listener directly after initializing the game
   const message = document.querySelector('.message');
   const enemyBoard = document.getElementById('computer-board');
-  game.updateDisplay();
 
   enemyBoard.addEventListener('click', (event) => {
     try {
@@ -60,12 +53,12 @@ form.addEventListener('submit', (event) => {
         setTimeout(() => {
           game.toggleTurn();
           game.updateDisplay();
-        }, 1000);
+        }, 800);
 
         // Simulate computer thinking
         setTimeout(() => {
           game.computerTurn();
-        }, 2000);
+        }, 1600);
       }
     } catch (error) {
       message.innerText = error.message;
