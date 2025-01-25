@@ -110,18 +110,31 @@ form button:hover,
   height: 40px;
   width: 40px;
   border: 1px solid gray;
+  cursor: pointer;
 }
 
 .cell.ship {
   background-color: blue;
+  pointer-events: none;
 }
 
 .cell.miss {
   background-color: #0a2a43;
+  pointer-events: none;
 }
 
 .cell.hit {
   background-color: red;
+  pointer-events: none;
+}
+
+.cell:hover {
+  background-color: rgb(40, 30, 129);
+}
+
+/* Style for the dragged ship */
+.ship-element:active {
+  opacity: 0.5;
 }
 
 .disabled {
