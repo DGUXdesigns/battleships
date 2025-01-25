@@ -25,6 +25,12 @@ export class RenderGame {
   }
 
   createBoard(player) {
+    const container = document.createElement('div');
+    container.classList.add('board-wrapper');
+
+    const boardName = document.createElement('h2');
+    boardName.innerText = `${player.name}'s waters`;
+
     const board = document.createElement('div');
     board.classList.add('game-board');
 
@@ -46,7 +52,9 @@ export class RenderGame {
       }
     }
 
-    return board;
+    container.append(board, boardName);
+
+    return container;
   }
 
   creatTurnDisplay() {
@@ -67,8 +75,6 @@ export class RenderGame {
   }
 
   computerTurn() {
-    this.updateDisplay;
-
     const { result, row, col } = this.playerTwo.attack(
       this.playerOne.gameboard,
     );
@@ -79,12 +85,10 @@ export class RenderGame {
       `.cell[data-row="${row}"][data-col="${col}"]`,
     );
 
-    if (result === true) {
-      message.innerText = 'The enemy hit your ship!';
-    } else {
-      message.innerText = 'The enemy missed!';
-    }
-
+    // Display attack result
+    message.innerText = result
+      ? 'The enemy hit your ship!'
+      : 'The enemy missed!';
     this.updateCell(cell, result);
 
     // Check if computer wins
@@ -92,15 +96,17 @@ export class RenderGame {
       message.innerText = 'Oh no! The enemy sunk all your battleships';
     }
 
-    // Change back to player turn
-    this.toggleTurn();
-    this.updateDisplay();
+    // Change back to player turn after delay
+    setTimeout(() => {
+      this.toggleTurn();
+      this.updateDisplay();
+    }, 1000);
   }
 
   updateCell(cell, result) {
     if (result === true) {
       cell.classList.add('hit');
-      return 'Enemy ship hit!';
+      return 'You hit an enemy ship!';
     } else if (result === false) {
       cell.classList.add('miss');
       return 'You missed...';
