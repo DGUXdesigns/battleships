@@ -17,4 +17,17 @@ export class Player {
   capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+  attack(gameboard, row, col) {
+    do {
+      row = Math.floor(Math.random() * gameboard.size);
+      col = Math.floor(Math.random() * gameboard.size);
+    } while (
+      gameboard.prevAttacks.some(
+        (attack) => attack.row === row && attack.col === col,
+      )
+    );
+
+    return { result: gameboard.receiveAttack(row, col), row, col };
+  }
 }
