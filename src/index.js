@@ -37,7 +37,7 @@ form.addEventListener('submit', (event) => {
   // Attach event listener directly after initializing the game
   const message = document.querySelector('.message');
   const enemyBoard = document.getElementById('computer-board');
-  message.innerText = game.updateDisplay();
+  game.updateDisplay();
 
   enemyBoard.addEventListener('click', (event) => {
     try {
@@ -55,13 +55,16 @@ form.addEventListener('submit', (event) => {
           return;
         }
 
-        game.toggleTurn();
+        // Delay before turn switch
+        setTimeout(() => {
+          game.toggleTurn();
+          game.updateDisplay();
+        }, 1000);
 
         // Simulate computer thinking
         setTimeout(() => {
-          game.updateDisplay();
           game.computerTurn();
-        }, 1000);
+        }, 2000);
       }
     } catch (error) {
       message.innerText = error.message;
