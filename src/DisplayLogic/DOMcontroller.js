@@ -4,24 +4,7 @@ export class RenderGame {
     this.playerOne = playerOne;
     this.playerTwo = playerTwo;
     this.currentPlayer = this.playerOne;
-  }
-
-  initGame() {
-    this.container.innerHTML = '';
-
-    const turnDisplay = this.creatTurnDisplay();
-
-    const boardContainer = document.createElement('div');
-    boardContainer.classList.add('board-container');
-
-    const playerBoard = this.createBoard(this.playerOne);
-    playerBoard.id = 'player-board';
-
-    const computerBoard = this.createBoard(this.playerTwo);
-    computerBoard.id = 'computer-board';
-
-    boardContainer.append(playerBoard, computerBoard);
-    this.container.append(turnDisplay, boardContainer);
+    this.gameOver = false;
   }
 
   createBoard(player) {
@@ -55,6 +38,63 @@ export class RenderGame {
     container.append(board, boardName);
 
     return container;
+  }
+
+  endGame() {
+    this.gameOver = true;
+
+    // Remove event listener from the enemy board
+    const enemyBoard = document.getElementById('computer-board');
+    enemyBoard.classList.add('disabled');
+  }
+
+  createPlayAgainButton() {
+    const playAgainContainer = document.createElement('div');
+    playAgainContainer.classList.add('play-again-container');
+
+    const playAgainButton = document.createElement('button');
+    playAgainButton.classList.add('play-again-button');
+    playAgainButton.innerText = 'Reset Game';
+
+    playAgainContainer.appendChild(playAgainButton);
+
+    playAgainButton.addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    return playAgainContainer;
+  }
+
+  resetGame() {
+    this.container.innerHTML = '';
+
+    this.initGame();
+
+    this.currentPlayer = this.playerOne;
+    this.gameOver = false;
+
+    const enemyBoard = document.getElementById('computer-board');
+    enemyBoard.classList.remove('disabled');
+  }
+
+  initGame() {
+    this.container.innerHTML = '';
+
+    const turnDisplay = this.creatTurnDisplay();
+
+    const boardContainer = document.createElement('div');
+    boardContainer.classList.add('board-container');
+
+    const playerBoard = this.createBoard(this.playerOne);
+    playerBoard.id = 'player-board';
+
+    const computerBoard = this.createBoard(this.playerTwo);
+    computerBoard.id = 'computer-board';
+
+    const resetBtn = this.createPlayAgainButton();
+
+    boardContainer.append(playerBoard, computerBoard);
+    this.container.append(turnDisplay, boardContainer, resetBtn);
   }
 
   creatTurnDisplay() {
@@ -94,6 +134,7 @@ export class RenderGame {
     // Check if computer wins
     if (this.playerOne.gameboard.gameOver()) {
       message.innerText = 'Oh no! The enemy sunk all your battleships';
+      this.endGame();
     }
 
     // Change back to player turn after delay
