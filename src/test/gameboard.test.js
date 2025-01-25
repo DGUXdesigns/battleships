@@ -17,9 +17,9 @@ describe('Gameboard Class', () => {
     expect(gameboard).toBeInstanceOf(Object);
   });
 
-  it('should keep track of missed attacks', () => {
-    expect(gameboard).toHaveProperty('missedAttacks');
-    expect(gameboard.missedAttacks).toEqual([]);
+  it('should keep track of previous attacks', () => {
+    expect(gameboard).toHaveProperty('prevAttacks');
+    expect(gameboard.prevAttacks).toEqual([]);
   });
 
   it("should keep track of all it's ships", () => {
