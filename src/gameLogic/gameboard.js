@@ -6,7 +6,47 @@ export class Gameboard {
     this.ships = [];
   }
 
+  isShipAdjacent(row, col, ship) {
+    const buffer = [
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, -1],
+      [0, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+    ];
+
+    // Check all adjacent cells around the (row, col)
+    for (const [dr, dc] of buffer) {
+      const adjacentRow = row + dr;
+      const adjacentCol = col + dc;
+
+      if (
+        adjacentRow >= 0 &&
+        adjacentRow < this.size &&
+        adjacentCol >= 0 &&
+        adjacentCol < this.size &&
+        this.gameboard[adjacentRow][adjacentCol] !== null &&
+        !(
+          this.gameboard[adjacentRow][adjacentCol] === 'ship' &&
+          ship &&
+          ship.location.some(
+            (loc) => loc.row === adjacentRow && loc.col === adjacentCol,
+          )
+        )
+      ) {
+        return false; // Return false if adjacent cell has a ship that is not the ship being placed
+      }
+    }
+
+    return true; // Return true if no adjacent ship was found
+  }
+
   placeShip(ship, row, col, horizontal = true) {
+    ship.location = [];
+
     for (let i = 0; i < ship.length; i++) {
       const currentRow = horizontal ? row : row + i;
       const currentCol = horizontal ? col + i : col;
@@ -15,8 +55,12 @@ export class Gameboard {
       if (
         currentRow >= this.size ||
         currentCol >= this.size ||
-        this.gameboard[currentRow][currentCol] !== null
+        this.gameboard[currentRow][currentCol] !== null ||
+        !this.isShipAdjacent(currentRow, currentCol, ship)
       ) {
+        ship.location.forEach(({ row, col }) => {
+          this.gameboard[row][col] = null;
+        });
         throw new Error('Invalid ship placement');
       }
 
@@ -25,6 +69,23 @@ export class Gameboard {
     }
 
     this.ships.push(ship);
+  }
+
+  randomPlaceShip(ship) {
+    let placed = false;
+
+    while (!placed) {
+      const horizontal = Math.random() < 0.5; // Randomly decide orientation (horizontal/vertical)
+      const row = Math.floor(Math.random() * this.size);
+      const col = Math.floor(Math.random() * this.size);
+
+      try {
+        this.placeShip(ship, row, col, horizontal);
+        placed = true;
+      } catch (error) {
+        continue;
+      }
+    }
   }
 
   receiveAttack(row, col) {
